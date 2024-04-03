@@ -6,7 +6,7 @@ Clonner le repo :
 git clone https://github.com/AlbaNagisa/YPokedex
 ```
 
-Acceder au repertoire creer
+Acceder au repertoire créer
 
 ```sh
 cd YPokedex
