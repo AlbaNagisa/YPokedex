@@ -3,14 +3,27 @@ import prisma from "@/lib/prisma";
 
 /**
  * @param n number d'élément par page   
+ * @param include  {
+            pokemon_v2_pokemonability: {
+                include: {
+                    pokemon_v2_ability: true
+                }
+            },
+            pokemon_v2_pokemonstat: {
+                include: {
+                    pokemon_v2_stat: true
+                }
+            }
+        }
  */
-export async function pagination(n: number, page: number, tableName: any) {
+export async function pagination(n: number, page: number, tableName: any, include: any) {
     // @ts-ignore
-    const pageN = Math.trunc((await prisma[tableName].count()) / n)
+    const pageN = Math.trunc((await prisma.pokemon_v2_pokemon.count()) / n)
     // @ts-ignore
-    const data = await prisma[tableName].findMany({
+    const data = await prisma.pokemon_v2_pokemon.findMany({
         skip: page * n,
-        take: n
+        take: n,
+        include
     })
 
     console.log(data)

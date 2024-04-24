@@ -4,6 +4,8 @@ import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
+import { version } from "os";
+import { group } from "console";
 
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
@@ -15,7 +17,40 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     const elemPerPage = url.searchParams.get("elemPerPage")
     const reqElemPerPage = parseInt(elemPerPage ? elemPerPage : "5")
 
-    return NextResponse.json(await pagination(reqElemPerPage, reqPage, "pokemon_v2_pokemon"))
+    return NextResponse.json(await pagination(reqElemPerPage, reqPage, "pokemon_v2_pokemon", {
+        pokemon_v2_pokemonform: {
+            include: {
+                pokemon_v2_pokemonformgeneration: {
+                    include: {
+                        pokemon_v2_generation: true
+                    }
+                }
+            }
+        },
+        pokemon_v2_pokemonstat: {
+            include: {
+                pokemon_v2_stat: true
+            }
+        },
+
+        pokemon_v2_pokemonability: {
+            include: {
+                pokemon_v2_ability: true
+
+            }
+        },
+
+
+        pokemon_v2_pokemonmove: {
+            where: {
+                version_group_id: 1
+            },
+            include: {
+                pokemon_v2_move: true
+
+            }
+        }
+    }))
 }
 
 
