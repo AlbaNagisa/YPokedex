@@ -1,11 +1,10 @@
-
-import { pagination } from "@/lib/pagination";
+import {pagination} from "@/lib/pagination";
 import prisma from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
-import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/router'
-import { version } from "os";
-import { group } from "console";
+import {NextRequest, NextResponse} from "next/server";
+import {useSearchParams} from 'next/navigation'
+import {useRouter} from 'next/router'
+import {version} from "os";
+import {group} from "console";
 
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
@@ -15,7 +14,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     const reqPage = parseInt(pageString ? pageString : "0")
 
     const elemPerPage = url.searchParams.get("elemPerPage")
-    const reqElemPerPage = parseInt(elemPerPage ? elemPerPage : "5")
+    const reqElemPerPage = parseInt(elemPerPage ? elemPerPage : "100")
 
     return NextResponse.json(await pagination(reqElemPerPage, reqPage, "pokemon_v2_pokemon", {
         pokemon_v2_pokemonform: {
