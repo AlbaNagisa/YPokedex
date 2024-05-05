@@ -1,20 +1,20 @@
-import { useState } from "react";
+import {useState} from "react";
 import prisma from "@/lib/prisma";
 
 /**
- * @param n number d'élément par page   
+ * @param n number d'élément par page
  * @param include  {
-            pokemon_v2_pokemonability: {
-                include: {
-                    pokemon_v2_ability: true
-                }
-            },
-            pokemon_v2_pokemonstat: {
-                include: {
-                    pokemon_v2_stat: true
-                }
-            }
-        }
+ pokemon_v2_pokemonability: {
+ include: {
+ pokemon_v2_ability: true
+ }
+ },
+ pokemon_v2_pokemonstat: {
+ include: {
+ pokemon_v2_stat: true
+ }
+ }
+ }
  */
 export async function pagination(n: number, page: number, tableName: any, include: any) {
     // @ts-ignore
@@ -26,11 +26,12 @@ export async function pagination(n: number, page: number, tableName: any, includ
         include
     })
 
-    console.log(data)
+    console.log(page)
 
-    return { hasNext: pageN > page, data }
+    return {hasNext: pageN > page, page: pageN, data}
 }
-/* 
+
+/*
     {
         hasNext: true or false
         data: [tout les pokemon],

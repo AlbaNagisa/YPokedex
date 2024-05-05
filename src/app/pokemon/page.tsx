@@ -1,34 +1,42 @@
 "use client"
-import Image from "next/image";
-import Tilt from 'react-parallax-tilt';
-import Link from "next/link";
 import {useEffect, useState} from "react";
+import PokemonCard from "@/components/PokemonCard";
 
 export default function Page() {
     const [pokemons, setPokemons] = useState([])
+    const [hasNextPage, setHasNextPage] = useState(false)
     const [page, setPage] = useState(0)
+    const [maxPage, setMaxPage] = useState(0)
 
     useEffect(() => {
-        fetch(`/api/pokemons?page=${page}`).then((res) => res.json()).then((data) => setPokemons(data))
-    }, [])
+        fetch(`/api/pokemons?page=${page}`).then((res) => res.json()).then((data) => {
+            setPokemons(data.data)
+            setMaxPage(data.page)
+            setHasNextPage(data.hasNext)
+        })
+    }, [page])
 
-    return <div className="flex h-fit flex-row flex-wrap">
-        {/*container*/}
-        //@ts-ignore next-line
-        {pokemons ?? pokemons?.data.map((pokemon) => {
+    return <div className="flex h-fit flex-col justify-evenly">
+        <div className="flex flex-row justify-evenly">
+            <button onClick={() => {
+                if (page > 0) {
+                    setPage(page - 1)
+                }
+            }}>Previous
+            </button>
+            <div>{page + 1}/{maxPage + 1}</div>
+            <button onClick={() => {
+                console.log(hasNextPage)
 
-        })}
-        <Tilt className="bg-[#222323] flex w-[10vw] h-[25vh] rounded-xl flex-col">
-            <Link href="#" className="bg-[#222323] flex w-[10vw] h-[25vh] rounded-xl flex-col">
-                <div className="flex w-full rounded-xl h-[70%] relative">
-                    <Image className="aspect-square" fill objectFit="contain"
-                           src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png"}
-                           alt={"img"}/>
-                </div>
-                <div className="bg-[#FFFFFF10] h-[30%] w-full rounded-b-xl flex justify-center items-center">
-                    <h2 className="text-4xl">Ditto</h2>
-                </div>
-            </Link>
-        </Tilt>
+                if (hasNextPage) {
+                    setPage(page + 1)
+                }
+            }}>Next
+            </button>
+        </div>
+        <div className="flex h-fit flex-row flex-wrap justify-evenly">
+            {/*@ts-ignore next-line*/}
+            {pokemons && pokemons.map((pokemon: any, i: number) => <PokemonCard key={i} pokemon={pokemon}/>)}
+        </div>
     </div>;
 }
