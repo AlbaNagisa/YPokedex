@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  ypokedex:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=file:./pokemon.sqlite3
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - .:/usr/YPokedex
